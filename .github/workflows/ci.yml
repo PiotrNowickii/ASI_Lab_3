@@ -1,0 +1,32 @@
+# .github/workflows/ci.yml
+
+name: CI/CD Pipeline for ML Model Training
+
+# Wykonuj akcje przy każdym pushu do gałęzi main
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  train-model:
+    runs-on: ubuntu-latest
+    
+    steps:
+      # Krok 1: Checkout repozytorium
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      # Krok 2: Zainstaluj Python i zależności
+      - name: Install Python
+        uses: actions/setup-python@v3
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      # Krok 3: Pobierz dataset
+      - name: Download dataset
+        run: curl -L -o CollegeDistance.csv "https://vincentarelbundock.github.io/Rdatasets/csv/AER/CollegeDistance.csv"
+      # Krok 4: Uruchom skrypt budujący model
+      - name: Run model script
+        run: python3 s24667.py
+
